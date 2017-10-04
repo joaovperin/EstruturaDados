@@ -1,0 +1,27 @@
+LinkedListNode* ls_aV3ppend(LinkedListNode *p, Produto prod) {
+    LinkedListNode* node = p;
+    if (p != NULL) {
+        LinkedListNode* it = p;
+        while (it -> next != NULL) it = it -> next;
+        node = it -> next;
+    }
+    // Cria elemento
+    node = (struct LinkedListNode *) malloc(sizeof (struct LinkedListNode));
+    node -> e = prod;
+    node -> next = NULL;
+    return p;
+}
+
+// TÁ QUASE FUNFANDO ESSSE AQ:
+
+LinkedListNode* ls_old_append(LinkedListNode *p, Produto prod) {
+    LinkedListNode* it = p;
+    while (it -> next != NULL) {
+        it = it -> next;
+    }
+    // Cria elemento
+    it -> next = (struct LinkedListNode *) malloc(sizeof (struct LinkedListNode));
+    it -> next -> e = prod;
+    it -> next -> next = NULL;
+    return p;
+}
