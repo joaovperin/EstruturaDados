@@ -39,26 +39,18 @@
 int main() {
     // Declaração do nodo inicial
     LinkedListNode *head;
-    int idx;
-    // Inicializa o nodo inicial e o índice
+    // Inicializa o nodo inicial
     head = ls_create();
-    idx = 0;
     // Lista a lista
     putchar('\n');
     ls_printAll(head);
-    // Remove o elemento de código 3
-    //    ls_remove(head, 2);
-    // Lista a lista
-    //    putchar('\n');
-    //    ls_printAll(head);
+    // Remove o elemento de código 3 e lista novamente
+    //ls_remove(head, 2);
+    //putchar('\n');
+    //ls_printAll(head);
 
     printf("\nend");
-
     return 0;
-}
-
-void limpaBuffer() {
-    fflush(stdin);
 }
 
 /**
@@ -190,6 +182,9 @@ Produto criaProduto(int cod, char valor[]) {
     return prr;
 }
 
+/**
+ * Cria uma nova lista com valores já inicializados
+ */
 LinkedListNode* createNewListWithValues() {
     LinkedListNode* head = NULL;
     head = ls_append(head, criaProduto(1, "FAR. AMIZADE A71"));
@@ -214,4 +209,11 @@ LinkedListNode* createNewListWithValues() {
     head = ls_append(head, criaProduto(10090, "LASANHA (300G)"));
     head = ls_append(head, criaProduto(10100, "IOGURTE 100G FRD C/10"));
     return head;
+}
+
+/**
+ * Limpa o buffer do teclado
+ */
+void limpaBuffer() {
+    fflush(stdin);
 }
