@@ -5,52 +5,89 @@
 
 // Declaração das estruturas e prototipação dos métodos
 #include "lista-linear-encadeada.h"
-#define DEBUG 1
+#define DEBUG 0
 
 /**
- * 1) Criar uma estrutura com no mínimo dois membros, um valor inteiro e um vetor de caracteres. Por exemplo:
- *
- * struct cliente {
- *  int mat;
- *  char nome[40];
- * };
- *
- * struct elemento {
- *  struct cliente cli;
- *  struct elemento *prox;
- * }
- *
- * 2) Implementar as seguintes funções:
- *
- * a) Criar uma lista;                                        = ls_create();
- * b) Inserir um nodo no início da lista;                     = ls_preppend();
- * c) Inserir um nodo no final da lista;                      = ls_append();
- * d) Remover um nodo da lista;                               = ls_remove();
- * e) Buscar um nodo na lista a partir da matrícula do aluno; = ls_readKey();
- * f) Imprimir a lista;                                       = ls_printAll();
- * g) Limpar a lista;                                         = ls_close();
- * h) Verificar se a lista está vazia.                        = ls_isEmpty();
- *
- * 3) Implementar uma função que insira os nodos de modo ordenado (crescente), considerando a matrícula;
- *
- * 4) Implementar uma função que insira os nodos de modo ordenado (decrescente), considerando a matrícula ;
- *
+ * Método auxiliar para testes
+ */
+LinkedListNode* ls_insert(LinkedListNode *p, Produto prod) {
+    return ls_insertAsc(p, prod);
+}
+
+/**
+ * Entry point principal
+ * 
+ * @return int
  */
 int main() {
-    // Declaração do nodo inicial
-    LinkedListNode *head;
-    // Inicializa o nodo inicial
-    head = ls_create();
-    // Lista a lista
-    putchar('\n');
-    ls_printAll(head);
-    // Remove o elemento de código 3 e lista novamente
-    //ls_remove(head, 2);
-    //putchar('\n');
-    //ls_printAll(head);
 
-    printf("\nend");
+    // Declaração e inicialização do nodo inicial
+    LinkedListNode *head;
+    head = ls_create();
+
+    // Inserção de alguns elementos
+    head = ls_insert(head, criaProduto(1010, "perin 1010"));
+    head = ls_insert(head, criaProduto(3050, "perin 3050"));
+    head = ls_insert(head, criaProduto(2020, "perin 2020"));
+
+    // Printa todos os elementos da lista
+    ls_printAll(head);
+    putchar('\n');
+
+    printf("\nFim.");
     return 0;
+}
+
+/*
+ * Insere um elemento em ordem crescente na lista
+ */
+LinkedListNode* ls_insertAsc(LinkedListNode *p, Produto prod) {
+    // Se for uma lista vazia, adiciona no final
+    if (p == NULL) {
+        return ls_preppend(NULL, prod);
+    }
+    // Encontra a posição
+    LinkedListNode* it = p;
+    LinkedListNode* ant = it;
+    while (it -> next != NULL) {
+        ant = it;
+        it = it -> next;
+        if (it -> e.codigo >= prod.codigo) {
+            break;
+        }
+    }
+    // Cria novo elemento
+    LinkedListNode* tmp = (struct LinkedListNode *) malloc(sizeof (struct LinkedListNode));
+    tmp -> e = prod;
+    ant -> next = tmp;
+    ant -> next -> next = it;
+    return p;
+}
+
+/*
+ * Insere um elemento em ordem decrescente na lista
+ */
+LinkedListNode* ls_insertDesc(LinkedListNode *p, Produto prod) {
+    // Se for uma lista vazia, adiciona no final
+    if (p == NULL) {
+        return ls_preppend(p, prod);
+    }
+    // Encontra a posição
+    LinkedListNode* it = p;
+    LinkedListNode* ant = it;
+    while (it -> next != NULL) {
+        ant = it;
+        it = it -> next;
+        if (it -> e.codigo <= prod.codigo) {
+            break;
+        }
+    }
+    // Cria um novo elemento e insere-o na lista
+    LinkedListNode* newElm = (struct LinkedListNode *) malloc(sizeof (struct LinkedListNode));
+    newElm -> e = prod;
+    newElm -> next = ant -> next;
+    ant -> next = newElm;
+    return p;
 }
 
 /**
@@ -176,8 +213,7 @@ void printaProduto(Produto e) {
 Produto criaProduto(int cod, char valor[]) {
     Produto prr;
     prr.codigo = cod;
-    prr.descricao = (char*) malloc(PROD_DESC_LEN * sizeof (char));
-    //    prr.descricao = (char*) malloc(strlen(valor) * sizeof (char));
+    prr.descricao = (char*) malloc(PROD_DESC_LEN /*strlen(valor)*/ * sizeof (char));
     strcpy(prr.descricao, valor);
     return prr;
 }
@@ -187,27 +223,32 @@ Produto criaProduto(int cod, char valor[]) {
  */
 LinkedListNode* createNewListWithValues() {
     LinkedListNode* head = NULL;
-    head = ls_append(head, criaProduto(1, "FAR. AMIZADE A71"));
-    head = ls_append(head, criaProduto(3225, "RLC 250 GR EMBALAGENS"));
-    head = ls_append(head, criaProduto(3908, "BERCO COQUETEL INTEGRAL LIGHT"));
-    head = ls_append(head, criaProduto(4047, "COQUETEL INTEGRAL LIGHT 250 G"));
-    head = ls_append(head, criaProduto(4730, "PPLC- PASTEIS CALABRESA 280 GR"));
-    head = ls_append(head, criaProduto(10010, "ERVA MATE TRADICIONAL 1KG"));
-    head = ls_append(head, criaProduto(10120, "LASANHA 1000G"));
-    head = ls_append(head, criaProduto(10150, "ERVA MATE CITRICOS 500G"));
-    head = ls_append(head, criaProduto(10160, "TERERE 500G"));
-    head = ls_append(head, criaProduto(10170, "DANONE BAND C/6UN"));
-    head = ls_append(head, criaProduto(10180, "MASSA INDUSTRIAL"));
-    head = ls_append(head, criaProduto(10185, "MASSA PARA PASTEL ROLO 500G"));
-    head = ls_append(head, criaProduto(10190, "MASSA PASTEL DISCO ESP.400G"));
-    head = ls_append(head, criaProduto(10191, "MASSA P/ PASTEL DL RECORD"));
-    head = ls_append(head, criaProduto(10020, "ERVA MATE TRADICIONAL 500G"));
-    head = ls_append(head, criaProduto(10030, "MASSA ESPAGUETE ESPINAFRE 500G"));
-    head = ls_append(head, criaProduto(10060, "PASTEL DE FORNO MEDIO 300G."));
-    head = ls_append(head, criaProduto(10070, "FRESA TOPO RET 2C MD K40 TINAL"));
-    head = ls_append(head, criaProduto(10080, "MASSA FOLHADA ROLO 300G"));
-    head = ls_append(head, criaProduto(10090, "LASANHA (300G)"));
-    head = ls_append(head, criaProduto(10100, "IOGURTE 100G FRD C/10"));
+    head = ls_append(head, criaProduto(5000, "elm5000"));
+    head = ls_append(head, criaProduto(4000, "elm3000"));
+    head = ls_append(head, criaProduto(3000, "elm3000"));
+    head = ls_append(head, criaProduto(2000, "elm2000"));
+    head = ls_append(head, criaProduto(1000, "elm1000"));
+    //    head = ls_append(head, criaProduto(1, "FAR. AMIZADE A71"));
+    //    head = ls_append(head, criaProduto(3225, "RLC 250 GR EMBALAGENS"));
+    //    head = ls_append(head, criaProduto(3908, "BERCO COQUETEL INTEGRAL LIGHT"));
+    //    head = ls_append(head, criaProduto(4047, "COQUETEL INTEGRAL LIGHT 250 G"));
+    //    head = ls_append(head, criaProduto(4730, "PPLC- PASTEIS CALABRESA 280 GR"));
+    //    head = ls_append(head, criaProduto(10010, "ERVA MATE TRADICIONAL 1KG"));
+    //    head = ls_append(head, criaProduto(10120, "LASANHA 1000G"));
+    //    head = ls_append(head, criaProduto(10150, "ERVA MATE CITRICOS 500G"));
+    //    head = ls_append(head, criaProduto(10160, "TERERE 500G"));
+    //    head = ls_append(head, criaProduto(10170, "DANONE BAND C/6UN"));
+    //    head = ls_append(head, criaProduto(10180, "MASSA INDUSTRIAL"));
+    //    head = ls_append(head, criaProduto(10185, "MASSA PARA PASTEL ROLO 500G"));
+    //    head = ls_append(head, criaProduto(10190, "MASSA PASTEL DISCO ESP.400G"));
+    //    head = ls_append(head, criaProduto(10191, "MASSA P/ PASTEL DL RECORD"));
+    //    head = ls_append(head, criaProduto(10020, "ERVA MATE TRADICIONAL 500G"));
+    //    head = ls_append(head, criaProduto(10030, "MASSA ESPAGUETE ESPINAFRE 500G"));
+    //    head = ls_append(head, criaProduto(10060, "PASTEL DE FORNO MEDIO 300G."));
+    //    head = ls_append(head, criaProduto(10070, "FRESA TOPO RET 2C MD K40 TINAL"));
+    //    head = ls_append(head, criaProduto(10080, "MASSA FOLHADA ROLO 300G"));
+    //    head = ls_append(head, criaProduto(10090, "LASANHA (300G)"));
+    //    head = ls_append(head, criaProduto(10100, "IOGURTE 100G FRD C/10"));
     return head;
 }
 

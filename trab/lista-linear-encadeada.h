@@ -1,3 +1,32 @@
+/**
+ * 1) Criar uma estrutura com no mínimo dois membros, um valor inteiro e um vetor de caracteres. Por exemplo:
+ *
+ * struct cliente {
+ *  int mat;
+ *  char nome[40];
+ * };
+ *
+ * struct elemento {
+ *  struct cliente cli;
+ *  struct elemento *prox;
+ * }
+ *
+ * 2) Implementar as seguintes funções:
+ *
+ * a) Criar uma lista;                                        = ls_create();
+ * b) Inserir um nodo no início da lista;                     = ls_preppend();
+ * c) Inserir um nodo no final da lista;                      = ls_append();
+ * d) Remover um nodo da lista;                               = ls_remove();
+ * e) Buscar um nodo na lista a partir da matrícula do aluno; = ls_readKey();
+ * f) Imprimir a lista;                                       = ls_printAll();
+ * g) Limpar a lista;                                         = ls_close();
+ * h) Verificar se a lista está vazia.                        = ls_isEmpty();
+ *
+ * 3) Implementar uma função que insira os nodos de modo ordenado (crescente), considerando a matrícula;
+ *
+ * 4) Implementar uma função que insira os nodos de modo ordenado (decrescente), considerando a matrícula ;
+ *
+ */
 #ifndef LISTA_LINEAR_ENCADEADA
 #define LISTA_LINEAR_ENCADEADA
 
@@ -27,6 +56,9 @@ LinkedListNode* ls_preppend(LinkedListNode *p, Produto prod);
 LinkedListNode* ls_append(LinkedListNode *p, Produto prod);
 LinkedListNode* ls_remove(LinkedListNode *head, int cod);
 LinkedListNode* ls_readKey(LinkedListNode *p, int cod);
+
+LinkedListNode* ls_insertAsc(LinkedListNode *p, Produto prod);
+LinkedListNode* ls_insertDesc(LinkedListNode *p, Produto prod);
 
 // Funções de manipulação da lista
 void ls_printAll(LinkedListNode *p);
