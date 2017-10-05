@@ -33,16 +33,19 @@ int main() {
     putchar('\n');
 
     // Inserção de alguns elementos
-    head = ls_insert(head, criaProduto(1010, "perin 1010"));
-    head = ls_insert(head, criaProduto(50, "perin 50"));
-    head = ls_insert(head, criaProduto(340, "perin 340"));
-    head = ls_insert(head, criaProduto(59, "perin 59"));
-    head = ls_insert(head, criaProduto(104, "perin 104"));
+    head = ls_insert(head, criaProduto(700, "perin 700"));
+    head = ls_insert(head, criaProduto(900, "perin 900"));
+    head = ls_insert(head, criaProduto(800, "perin 800"));
+    //    head = ls_insert(head, criaProduto(1010, "perin 1010"));
+    //    head = ls_insert(head, criaProduto(50, "perin 50"));
+    //    head = ls_insert(head, criaProduto(340, "perin 340"));
+    //    head = ls_insert(head, criaProduto(59, "perin 59"));
+    //    head = ls_insert(head, criaProduto(104, "perin 104"));
 
     ls_printAll(head);
     putchar('\n');
 
-    head = ls_remove(head, 59);
+    //    head = ls_remove(head, 59);
     //head = ls_remove(head, 59);  // TODO (05/10/2017): Tratar deleção de elementos inexistentes.
 
     // Printa todos os elementos da lista
@@ -89,17 +92,18 @@ LinkedListNode* ls_insertDesc(LinkedListNode *head, Produto prod) {
     // Encontra a posição
     LinkedListNode* it = head;
     LinkedListNode* ant = NULL;
-    while (it -> next != NULL && (it -> e.codigo < prod.codigo)) {
+    while (it -> next != NULL && (it -> e.codigo > prod.codigo)) {
         ant = it;
         it = it -> next;
     }
     // Se não possuir registro anterior, adiciona como Head
-    if (ant == NULL) return ls_append(head, prod);
+    if (ant == NULL) return (prod.codigo >= it -> e.codigo ?
+            ls_preppend(head, prod) : ls_append(head, prod));
     // Cria um novo elemento e insere-o na lista
     LinkedListNode* newElm = (struct LinkedListNode *) malloc(sizeof (struct LinkedListNode));
     newElm -> e = prod;
-    newElm -> next = it;
     ant -> next = newElm;
+    newElm -> next = it;
     return head;
 }
 
@@ -238,11 +242,11 @@ Produto criaProduto(int cod, char valor[]) {
  */
 LinkedListNode* createNewListWithValues() {
     LinkedListNode* head = NULL;
-    head = ls_append(head, criaProduto(1000, "elm1000"));
-    head = ls_append(head, criaProduto(2000, "elm2000"));
-    head = ls_append(head, criaProduto(3000, "elm3000"));
-    head = ls_append(head, criaProduto(4000, "elm4000"));
-    head = ls_append(head, criaProduto(5000, "elm5000"));
+        head = ls_append(head, criaProduto(3000, "elm3000-H"));
+        head = ls_append(head, criaProduto(4000, "elm4000"));
+        head = ls_append(head, criaProduto(5000, "elm5000-F"));
+    //    head = ls_append(head, criaProduto(2000, "elm2000"));
+    //    head = ls_append(head, criaProduto(1000, "elm1000-F"));
     return head;
 }
 
