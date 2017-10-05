@@ -35,9 +35,11 @@ int main() {
     head = ls_insert(head, criaProduto(59, "perin 59"));
     head = ls_insert(head, criaProduto(104, "perin 104"));
 
-    //    head = ls_insert(head, criaProduto(2020, "perin 2020"));
-    //    putchar('\n');
-    //    printaProduto(head -> next -> next -> e);
+    ls_printAll(head);
+    putchar('\n');
+
+    head = ls_remove(head, 59);
+    head = ls_remove(head, 59);
 
     // Printa todos os elementos da lista
     ls_printAll(head);
@@ -57,46 +59,45 @@ LinkedListNode* ls_insertAsc(LinkedListNode *head, Produto prod) {
         return ls_preppend(NULL, prod);
     }
     // Encontra a posição
-    LinkedListNode* anterior = NULL;
+    LinkedListNode* ant = NULL;
     LinkedListNode* it = head;
     while (it != NULL && (it -> e.codigo < prod.codigo)) {
-        anterior = it;
+        ant = it;
         it = it -> next;
     }
     // Se não possuir registro anterior, adiciona como Head
-    if (anterior == NULL) return ls_preppend(head, prod);
+    if (ant == NULL) return ls_preppend(head, prod);
     // Cria um novo elemento e insere-o na lista
     LinkedListNode* newElm = (struct LinkedListNode *) malloc(sizeof (struct LinkedListNode));
     newElm -> e = prod;
-    newElm -> next = anterior -> next;
-    anterior -> next = newElm;
+    newElm -> next = ant -> next;
+    ant -> next = newElm;
     return head;
 }
 
 /*
  * Insere um elemento em ordem decrescente na lista
  */
-LinkedListNode* ls_insertDesc(LinkedListNode *p, Produto prod) {
+LinkedListNode* ls_insertDesc(LinkedListNode *head, Produto prod) {
     // Se for uma lista vazia, adiciona no final
-    if (p == NULL) {
-        return ls_preppend(p, prod);
+    if (head == NULL) {
+        return ls_preppend(head, prod);
     }
     // Encontra a posição
-    LinkedListNode* it = p;
-    LinkedListNode* ant = it;
-    while (it -> next != NULL) {
+    LinkedListNode* it = head;
+    LinkedListNode* ant = NULL;
+    while (it -> next != NULL && (it -> e.codigo < prod.codigo)) {
         ant = it;
         it = it -> next;
-        if (it -> e.codigo <= prod.codigo) {
-            break;
-        }
     }
+    // Se não possuir registro anterior, adiciona como Head
+    if (ant == NULL) return ls_append(head, prod);
     // Cria um novo elemento e insere-o na lista
     LinkedListNode* newElm = (struct LinkedListNode *) malloc(sizeof (struct LinkedListNode));
     newElm -> e = prod;
-    newElm -> next = ant -> next;
+    newElm -> next = it;
     ant -> next = newElm;
-    return p;
+    return head;
 }
 
 /**
@@ -175,10 +176,12 @@ void ls_printAll(LinkedListNode *p) {
     LinkedListNode *it = p;
     // Printa os cabeçalhos
     printf("\nDados: ");
-    printf("\n|-Cod--|-Descricao----------------------|");
+    printf("\n|-ROW|-Cod--|-Descricao----------------------|");
     // Percorre a lista printando
+    int idx = 1;
     while (it != NULL) {
         putchar('\n');
+        printf("|%4d", idx++);
         printaProduto(it -> e);
         it = it -> next;
     }
