@@ -2,6 +2,7 @@
 setlocal
    set PRG_DEF=lista-linear-encadeada
    set PRG=%1
+   set PATH=G:\PESSOAL\Program\Compiler\MinGW\bin\;
    set PATH=F:\PESSOAL\Program\Compiler\MinGW\bin\;%PATH%
    if "%PRG%"=="" echo Assumindo PRG default:%PRG_DEF%.c & SET PRG=%PRG_DEF%
    if exist "./a.exe" echo Já existe um programa compilado, fazendo backup... & move ./a.exe ./a.exe.bak

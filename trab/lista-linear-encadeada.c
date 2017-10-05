@@ -5,18 +5,18 @@
 
 // Declaração das estruturas e prototipação dos métodos
 #include "lista-linear-encadeada.h"
-#define DEBUG 0
+#define DEBUG 1
 
 /**
  * Método auxiliar para testes
  */
 LinkedListNode* ls_insert(LinkedListNode *p, Produto prod) {
-    return ls_insertAsc(p, prod);
+    return ls_insertDesc(p, prod);
 }
 
 /**
  * Entry point principal
- * 
+ *
  * @return int
  */
 int main() {
@@ -25,24 +25,26 @@ int main() {
     LinkedListNode *head;
     head = ls_create();
 
+    ls_printAll(head);
+    putchar('\n');
+
     // Inserção de alguns elementos
     head = ls_insert(head, criaProduto(1010, "perin 1010"));
-    putchar('\n');
-    printaProduto(head -> e);
-
     head = ls_insert(head, criaProduto(50, "perin 50"));
-    putchar('\n');
-    printaProduto(head -> next -> e);
+    head = ls_insert(head, criaProduto(340, "perin 340"));
+    head = ls_insert(head, criaProduto(59, "perin 59"));
+    head = ls_insert(head, criaProduto(104, "perin 104"));
 
-//    head = ls_insert(head, criaProduto(2020, "perin 2020"));
-//    putchar('\n');
-//    printaProduto(head -> next -> next -> e);
+    //    head = ls_insert(head, criaProduto(2020, "perin 2020"));
+    //    putchar('\n');
+    //    printaProduto(head -> next -> next -> e);
 
     // Printa todos os elementos da lista
-    //    ls_printAll(head);
+    ls_printAll(head);
     putchar('\n');
 
     printf("\nFim.");
+    getch();
     return 0;
 }
 
@@ -55,19 +57,19 @@ LinkedListNode* ls_insertAsc(LinkedListNode *head, Produto prod) {
         return ls_preppend(NULL, prod);
     }
     // Encontra a posição
-    LinkedListNode* anterior = head;
-    LinkedListNode* it = head -> next;
-    while (it != NULL) {
-        if (it -> e.codigo >= prod.codigo){
-            break;
-        }
+    LinkedListNode* anterior = NULL;
+    LinkedListNode* it = head;
+    while (it != NULL && (it -> e.codigo < prod.codigo)) {
         anterior = it;
         it = it -> next;
     }
-    LinkedListNode* elm = (struct LinkedListNode *) malloc(sizeof (struct LinkedListNode));
-    elm -> e = prod;
-    elm -> next = it;
-    anterior -> next = elm;
+    // Se não possuir registro anterior, adiciona como Head
+    if (anterior == NULL) return ls_preppend(head, prod);
+    // Cria um novo elemento e insere-o na lista
+    LinkedListNode* newElm = (struct LinkedListNode *) malloc(sizeof (struct LinkedListNode));
+    newElm -> e = prod;
+    newElm -> next = anterior -> next;
+    anterior -> next = newElm;
     return head;
 }
 
@@ -233,7 +235,7 @@ LinkedListNode* createNewListWithValues() {
     head = ls_append(head, criaProduto(1000, "elm1000"));
     head = ls_append(head, criaProduto(2000, "elm2000"));
     head = ls_append(head, criaProduto(3000, "elm3000"));
-    head = ls_append(head, criaProduto(4000, "elm3000"));
+    head = ls_append(head, criaProduto(4000, "elm4000"));
     head = ls_append(head, criaProduto(5000, "elm5000"));
     return head;
 }
